@@ -7,12 +7,18 @@ namespace Talabat.Core.Specifications
 
         public ProductSpecification() : base()
         {
-            Includes.Add(p => p.productCategory);
-            Includes.Add(p => p.ProductBrand);
+            CommonIncludes();
         }
         public ProductSpecification(int id) : base(p => p.Id == id)
         {
+            CommonIncludes();
+        }
 
+        public void CommonIncludes()
+        {
+
+            Includes.Add(p => p.productCategory);
+            Includes.Add(p => p.ProductBrand);
         }
     }
 }

@@ -4,11 +4,11 @@ using Talabat.Core.Interfaces;
 
 namespace Talabat.Repositories
 {
-    public static class SpecificationEvaluator<T> where T : ModelBase
+    public static class SpecificationEvaluator
     {
 
 
-        public static IQueryable<T> GetQuery(IQueryable<T> InputQuery, ISpecification<T> Spec)
+        public static IQueryable<T> GetQuery<T>(IQueryable<T> InputQuery, ISpecification<T> Spec) where T : ModelBase
         {
 
             var Query = InputQuery;

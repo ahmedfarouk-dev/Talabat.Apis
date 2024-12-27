@@ -40,7 +40,7 @@ namespace Talabat.Repositories
 
         public IQueryable<T> ApplySpecification(ISpecification<T> Spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>(), Spec);
+            return SpecificationEvaluator.GetQuery<T>(_context.Set<T>(), Spec);
         }
     }
 }
