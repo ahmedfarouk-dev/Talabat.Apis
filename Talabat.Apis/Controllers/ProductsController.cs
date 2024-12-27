@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.Core.Entities;
 using Talabat.Core.Interfaces;
+using Talabat.Core.Specifications;
 
 namespace Talabat.Apis.Controllers
 {
@@ -18,7 +19,8 @@ namespace Talabat.Apis.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
-            var Products = await _product.GetAllAsync();
+            var Spec = new ProductSpecification();
+            var Products = await _product.GetAllWithSpecAsync(Spec);
             if (Products == null)
                 return BadRequest();
             return Ok(Products);
@@ -29,7 +31,21 @@ namespace Talabat.Apis.Controllers
         public async Task<ActionResult<Product>> GetById(int Id)
         {
 
-            var product = await _product.GetByIdAsync(Id);
+            ///var Spec = new BaseSpecification<Product>()
+            ///{
+            ///    Criteria = p => p.Id == Id,
+            ///    Includes = new List<System.Linq.Expressions.Expression<Func<Product, object>>>()
+            ///    {
+            ///        p =>p.ProductBrand,
+            ///        p =>p.productCategory
+            ///    }
+            ///
+            ///};
+            ///
+
+            var Spec = new ProductSpecification(Id);
+
+            var product = await _product.GetByIdWithSpecAsync(Spec);
             if (product == null)
                 return BadRequest();
 
