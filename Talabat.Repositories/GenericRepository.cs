@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Talabat.Core.Entities;
 using Talabat.Core.Interfaces;
 using Talabat.Repositories.Data;
@@ -43,6 +44,15 @@ namespace Talabat.Repositories
             return SpecificationEvaluator.GetQuery<T>(_context.Set<T>(), Spec);
         }
 
+        public Task<int> GetCount(Expression<Func<T, bool>> CountExperssion)
+        {
+            return _context.Set<T>().CountAsync(CountExperssion);
+        }
 
+        public async Task<int> GetCountWithSpecAsync(ISpecification<T> Spec)
+        {
+            return await ApplySpecification(Spec).CountAsync();
+
+        }
     }
 }

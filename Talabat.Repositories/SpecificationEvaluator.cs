@@ -25,6 +25,10 @@ namespace Talabat.Repositories
                 Query = Query.OrderByDescending(Spec.OrderByDesc);
             }
 
+            if (Spec.IsPagination)
+            {
+                Query = Query.Skip(Spec.Skip).Take(Spec.Take);
+            }
 
             Query = Spec.Includes.Aggregate(Query, (Current, Includ) => Current.Include(Includ));
 

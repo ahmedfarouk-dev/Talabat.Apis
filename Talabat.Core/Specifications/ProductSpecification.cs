@@ -5,21 +5,21 @@ namespace Talabat.Core.Specifications
     public class ProductSpecification : BaseSpecification<Product>
     {
 
-        public ProductSpecification(string? sort, int? BrandId, int? CategoryId) : base(
+        public ProductSpecification(ProductSpecParems specParems) : base(
 
-            p => (!BrandId.HasValue || p.BrandId == BrandId)
+            p => (!specParems.BrandId.HasValue || p.BrandId == specParems.BrandId)
 
 
             &&
 
 
-            (!CategoryId.HasValue || p.BrandId == CategoryId))
+            (!specParems.CategoryId.HasValue || p.BrandId == specParems.CategoryId))
         {
 
             CommonIncludes();
-            if (!string.IsNullOrWhiteSpace(sort))
+            if (!string.IsNullOrWhiteSpace(specParems.Sort))
             {
-                switch (sort)
+                switch (specParems.Sort)
                 {
                     case "priceAsc":
                         this.OrderByAsc(p => p.Price);
@@ -35,6 +35,11 @@ namespace Talabat.Core.Specifications
             }
             else
                 OrderByAsc(p => p.Name);
+            // pagesize = 5;  //// 4
+            // pageindex =2;
+            // count =20;
+            ApplyPagination((specParems.PageIndex - 1) * (specParems.PageSize), specParems.PageSize);
+
         }
         public ProductSpecification(int id) : base(p => p.Id == id)
         {
@@ -47,5 +52,7 @@ namespace Talabat.Core.Specifications
             Includes.Add(p => p.productCategory);
             Includes.Add(p => p.ProductBrand);
         }
+
+
     }
 }
