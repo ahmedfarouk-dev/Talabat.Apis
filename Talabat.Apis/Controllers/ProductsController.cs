@@ -33,13 +33,16 @@ namespace Talabat.Apis.Controllers
         public IRepositories<ProductCategory> _ProductCategory { get; }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAll(string? Sort, int? BrandId, int? CategoryId)
         {
-            var Spec = new ProductSpecification();
+
+
+            var Spec = new ProductSpecification(Sort, BrandId, CategoryId);
             var Products = await _product.GetAllWithSpecAsync(Spec);
+            var Res = _Mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturn>>(Products);
             if (Products == null)
                 return BadRequest(new ApiResponse(404));
-            return Ok(Products);
+            return Ok(Res);
 
         }
 
