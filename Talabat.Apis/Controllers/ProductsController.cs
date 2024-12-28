@@ -13,14 +13,24 @@ namespace Talabat.Apis.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IRepositories<Product> _product;
+        private readonly IRepositories<ProductBrand> _productBrand;
 
-        public ProductsController(IRepositories<Product> Product, IMapper mapper)
+        public ProductsController(
+            IRepositories<Product> Product
+            , IMapper mapper
+            , IRepositories<ProductBrand> ProductBrand
+            , IRepositories<ProductCategory> ProductCategory
+            )
+
         {
             _product = Product;
             _Mapper = mapper;
+            _productBrand = ProductBrand;
+            _ProductCategory = ProductCategory;
         }
 
         public IMapper _Mapper { get; }
+        public IRepositories<ProductCategory> _ProductCategory { get; }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAll()
@@ -59,15 +69,18 @@ namespace Talabat.Apis.Controllers
             return Ok(ProductWithMapper);
         }
 
-
-        [HttpGet("Server/{id}")]
-        public async Task<IActionResult> Server(int id)
+        [HttpGet("GetBrands")]
+        public async Task<IActionResult> GetBrands()
         {
-            var Spec = new ProductSpecification(id);
+            var AllBrands = await _productBrand.GetAllAsync();
+            return Ok(AllBrands);
+        }
 
-            var product = await _product.GetByIdWithSpecAsync(Spec);
-            product.PictureUrl.ToString();
-            return Ok(product);
+        [HttpGet("GetCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var Categories = await _ProductCategory.GetAllAsync();
+            return Ok(Categories);
         }
     }
 }

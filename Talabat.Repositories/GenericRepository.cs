@@ -16,8 +16,8 @@ namespace Talabat.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            if (typeof(T) == typeof(Product))
-                return (IEnumerable<T>)await _context.Set<Product>().Include(B => B.ProductBrand).Include(C => C.productCategory).ToListAsync();
+            //if (typeof(T) == typeof(Product))
+            //    return (IEnumerable<T>)await _context.Set<Product>().Include(B => B.ProductBrand).Include(C => C.productCategory).ToListAsync();
 
             return await _context.Set<T>().ToListAsync();
         }
@@ -42,5 +42,7 @@ namespace Talabat.Repositories
         {
             return SpecificationEvaluator.GetQuery<T>(_context.Set<T>(), Spec);
         }
+
+
     }
 }
