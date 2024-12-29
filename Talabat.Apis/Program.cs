@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Talabat.Apis.Extension;
 using Talabat.Apis.Helpers;
 using Talabat.Repositories.Data;
@@ -26,6 +27,13 @@ namespace Talabat.Apis
                            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
             builder.Services.AddAutoMapper(p => p.AddProfile(new MappingProfiles(builder.Configuration)));
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(Options =>
+            {
+                var Connection = builder.Configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(Connection);
+            });
+
 
             builder.Services.AddApplicationServices();
             var app = builder.Build();

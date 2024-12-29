@@ -13,6 +13,7 @@ namespace Talabat.Apis.Extension
         {
 
             services.AddScoped(typeof(IRepositories<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IBasketRepositorycs), typeof(BasketRepository));
 
 
             services.Configure<ApiBehaviorOptions>(options =>
