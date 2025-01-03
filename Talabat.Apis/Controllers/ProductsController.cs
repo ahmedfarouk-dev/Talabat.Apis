@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.Apis.DTOS;
 using Talabat.Apis.Errors;
@@ -34,6 +35,7 @@ namespace Talabat.Apis.Controllers
         public IRepositories<ProductCategory> _ProductCategory { get; }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Pagination<Product>>> GetAll([FromQuery] ProductSpecParems specParems)
         {
 
