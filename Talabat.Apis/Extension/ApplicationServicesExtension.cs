@@ -6,6 +6,7 @@ using System.Text;
 using Talabat.Apis.Errors;
 using Talabat.Core.Entities;
 using Talabat.Core.Interfaces;
+using Talabat.Core.Services;
 using Talabat.Repositories;
 using Talabat.Repositories.Identity;
 using Talabat.Services;
@@ -20,8 +21,10 @@ namespace Talabat.Apis.Extension
         {
 
             services.AddScoped(typeof(IRepositories<>), typeof(GenericRepository<>));
-            services.AddScoped(typeof(IBasketRepositorycs), typeof(BasketRepository));
+            services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IOrderService), typeof(OrderServices));
 
 
             services.Configure<ApiBehaviorOptions>(options =>

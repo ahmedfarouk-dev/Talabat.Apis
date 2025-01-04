@@ -14,5 +14,9 @@ namespace Talabat.Core.Interfaces
         public Task<int> GetCount(Expression<Func<T, bool>> CountExperssion);
 
         public Task<int> GetCountWithSpecAsync(ISpecification<T> Spec);
+
+        public void Add(T item);
+        public void Update(T item);
+        public void Delete(T item);
     }
 }

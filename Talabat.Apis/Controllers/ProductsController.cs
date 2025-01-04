@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.Apis.DTOS;
 using Talabat.Apis.Errors;
@@ -14,43 +13,35 @@ namespace Talabat.Apis.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IRepositories<Product> _product;
-        private readonly IRepositories<ProductBrand> _productBrand;
 
-        public ProductsController(
-            IRepositories<Product> Product
-            , IMapper mapper
-            , IRepositories<ProductBrand> ProductBrand
-            , IRepositories<ProductCategory> ProductCategory
-            )
+        private readonly IUnitOfWork _unitOfWork;
 
+        public ProductsController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _product = Product;
             _Mapper = mapper;
-            _productBrand = ProductBrand;
-            _ProductCategory = ProductCategory;
+            _unitOfWork = unitOfWork;
         }
 
         public IMapper _Mapper { get; }
         public IRepositories<ProductCategory> _ProductCategory { get; }
 
         [HttpGet]
-        [Authorize]
+
         public async Task<ActionResult<Pagination<Product>>> GetAll([FromQuery] ProductSpecParems specParems)
         {
 
 
             var Spec = new ProductSpecification(specParems);
-            var Products = await _product.GetAllWithSpecAsync(Spec);
+            //var Products = await _product.GetAllWithSpecAsync(Spec);
 
-
+            var Products = await _unitOfWork.Repository<Product>().GetAllWithSpecAsync(Spec);
             var Res = _Mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturn>>(Products);
 
             /// var Count = await _product.GetCount(p => (!specParems.BrandId.HasValue || p.BrandId == specParems.BrandId)
             /// &&
             /// (!specParems.CategoryId.HasValue || p.BrandId == specParems.CategoryId));
             var SpecCount = new ProductSpecCount(specParems);
-            var Count = await _product.GetCountWithSpecAsync(SpecCount);
+            var Count = await _unitOfWork.Repository<Product>().GetCountWithSpecAsync(SpecCount);
             if (Products == null)
                 return BadRequest(new ApiResponse(404));
 
@@ -76,7 +67,7 @@ namespace Talabat.Apis.Controllers
 
             var Spec = new ProductSpecification(Id);
 
-            var product = await _product.GetByIdWithSpecAsync(Spec);
+            var product = await _unitOfWork.Repository<Product>().GetByIdWithSpecAsync(Spec);
             var ProductWithMapper = _Mapper.Map<Product, ProductToReturn>(product);
             if (product == null)
                 return BadRequest(new ApiResponse(400));
@@ -87,14 +78,15 @@ namespace Talabat.Apis.Controllers
         [HttpGet("GetBrands")]
         public async Task<IActionResult> GetBrands()
         {
-            var AllBrands = await _productBrand.GetAllAsync();
+            //var AllBrands = await _productBrand.GetAllAsync();
+            var AllBrands = await _unitOfWork.Repository<ProductBrand>().GetAllAsync();
             return Ok(AllBrands);
         }
 
         [HttpGet("GetCategories")]
         public async Task<IActionResult> GetCategories()
         {
-            var Categories = await _ProductCategory.GetAllAsync();
+            var Categories = await _unitOfWork.Repository<ProductCategory>().GetAllAsync();
             return Ok(Categories);
         }
     }

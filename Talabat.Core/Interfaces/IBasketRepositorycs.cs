@@ -2,7 +2,7 @@
 
 namespace Talabat.Core.Interfaces
 {
-    public interface IBasketRepositorycs
+    public interface IBasketRepository
     {
 
 

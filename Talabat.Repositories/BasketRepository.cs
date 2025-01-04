@@ -5,7 +5,7 @@ using Talabat.Core.Interfaces;
 
 namespace Talabat.Repositories
 {
-    public class BasketRepository : IBasketRepositorycs
+    public class BasketRepository : IBasketRepository
     {
         private readonly IDatabase _Database;
 

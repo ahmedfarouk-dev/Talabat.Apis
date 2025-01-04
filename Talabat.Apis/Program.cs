@@ -34,6 +34,7 @@ namespace Talabat.Apis
 
                            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
+
             builder.Services.AddDbContext<StoreIdentity>(option =>
 
                           option.UseSqlServer(builder.Configuration.GetConnectionString("Identity"))
