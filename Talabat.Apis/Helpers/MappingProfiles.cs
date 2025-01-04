@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Talabat.Apis.DTOS;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Order;
 
 namespace Talabat.Apis.Helpers
 {
@@ -21,6 +22,21 @@ namespace Talabat.Apis.Helpers
 
             CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
             CreateMap<BasketItemDto, BasketItem>().ReverseMap();
+
+
+            CreateMap<Order, OrderToReturnDto>()
+                .ForMember(dt => dt.DeliveryMethodShortName, mod => mod.MapFrom(m => m.DeliveryMethod.ShortName))
+                .ForMember(dt => dt.DeliveryMethodCost, mod => mod.MapFrom(m => m.DeliveryMethod.Cost));
+
+
+            CreateMap<OrderItem, OrderItemDto>()
+               .ForMember(dt => dt.ProductName, mod => mod.MapFrom(m => m.product.ProductName))
+               .ForMember(dt => dt.ProductId, mod => mod.MapFrom(m => m.product.ProductId))
+               .ForMember(dt => dt.PictureUrl, mod => mod.MapFrom(m => $"{configuration["BaseApiUrl"]}/{m.product.PictureUrl}"))
+
+               ;
+
+
         }
     }
 }

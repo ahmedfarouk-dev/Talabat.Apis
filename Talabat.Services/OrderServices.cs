@@ -2,6 +2,7 @@
 using Talabat.Core.Entities.Order;
 using Talabat.Core.Interfaces;
 using Talabat.Core.Services;
+using Talabat.Core.Specifications;
 
 namespace Talabat.Services
 {
@@ -63,5 +64,30 @@ namespace Talabat.Services
             return Order;
 
         }
+
+        public Task<Order> GetOrderByIdForSpecificUser(string email, int OrderId)
+        {
+            var Spec = new OrderSpecifications(email, OrderId);
+
+            var orders = _unitOfWork.Repository<Order>().GetByIdWithSpecAsync(Spec);
+
+            return orders;
+
+        }
+
+        public Task<IEnumerable<Order>> GetOrdersForSpecificUser(string BuyerEmail)
+        {
+
+            var Spec = new OrderSpecifications(BuyerEmail);
+
+            var orders = _unitOfWork.Repository<Order>().GetAllWithSpecAsync(Spec);
+
+            return orders;
+
+        }
+
+
+
+
     }
 }
