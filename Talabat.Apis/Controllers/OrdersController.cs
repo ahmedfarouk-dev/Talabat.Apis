@@ -37,7 +37,6 @@ namespace Talabat.Apis.Controllers
             return Ok(Order);
         }
 
-
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<OrderToReturnDto>>> GetOrdersByUser()

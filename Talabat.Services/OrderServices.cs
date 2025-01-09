@@ -11,11 +11,15 @@ namespace Talabat.Services
         private readonly IBasketRepository _basket;
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderServices(IBasketRepository basket, IUnitOfWork unitOfWork)
+        public OrderServices(IBasketRepository basket, IUnitOfWork unitOfWork, IpaymentServices pay)
         {
             _basket = basket;
             _unitOfWork = unitOfWork;
+            Pay = pay;
         }
+
+        public IpaymentServices Pay { get; }
+
         public async Task<Order> CreateOrder(string BuyerEmail, string BasketId, int DeliveryMethodId, Addres ShippingAddress)
         {
             // 1.Get Basket From Basket Repo
@@ -51,7 +55,15 @@ namespace Talabat.Services
 
             //5.Create Order
 
-            var Order = new Order(BuyerEmail, ShippingAddress, DeliveryMethod, OrderItem, SubTotal);
+            var spec = new OrderPaymentSpecifications(Basket.PaymentIntentId);
+            var ExOredr = await _unitOfWork.Repository<Order>().GetByIdWithSpecAsync(spec);
+            if (ExOredr != null)
+            {
+                _unitOfWork.Repository<Order>().Delete(ExOredr);
+                await Pay.CreateOrUpdate(BasketId);
+
+            }
+            var Order = new Order(BuyerEmail, ShippingAddress, DeliveryMethod, OrderItem, SubTotal, Basket.PaymentIntentId);
 
             //6.Add Order Locally
 

@@ -26,5 +26,6 @@ namespace Talabat.Apis.DTOS
         [Required(ErrorMessage = "The Quantity field is required.")]
         [Range(0.1, double.MaxValue, ErrorMessage = "The Quantity must be at least 0.1.")]
         public decimal Quantity { get; set; }
+
     }
 }

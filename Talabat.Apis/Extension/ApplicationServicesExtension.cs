@@ -25,6 +25,7 @@ namespace Talabat.Apis.Extension
             services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IOrderService), typeof(OrderServices));
+            services.AddScoped(typeof(IpaymentServices), typeof(PaymentServices));
 
 
             services.Configure<ApiBehaviorOptions>(options =>

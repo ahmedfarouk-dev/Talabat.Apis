@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Talabat.Apis.ActionFilters;
 using Talabat.Apis.DTOS;
 using Talabat.Apis.Errors;
 using Talabat.Apis.Helpers;
@@ -11,8 +12,11 @@ namespace Talabat.Apis.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+
     public class ProductsController : ControllerBase
     {
+
 
         private readonly IUnitOfWork _unitOfWork;
 
@@ -50,6 +54,7 @@ namespace Talabat.Apis.Controllers
         }
 
         [HttpGet("{Id}")]
+        [ValidationActionFilter]
         public async Task<ActionResult<ProductToReturn>> GetById(int Id)
         {
 
@@ -78,6 +83,7 @@ namespace Talabat.Apis.Controllers
         [HttpGet("GetBrands")]
         public async Task<IActionResult> GetBrands()
         {
+
             //var AllBrands = await _productBrand.GetAllAsync();
             var AllBrands = await _unitOfWork.Repository<ProductBrand>().GetAllAsync();
             return Ok(AllBrands);

@@ -11,5 +11,10 @@
         {
             Id = id;
         }
+
+
+        public string? PaymentIntentId { get; set; }
+        public string? Secretkey { get; set; }
+        public int? DeliveryMethod { get; set; }
     }
 }

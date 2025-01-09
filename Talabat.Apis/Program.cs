@@ -18,7 +18,7 @@ namespace Talabat.Apis
 
             // Add services to the container.
 
-            builder.Services.AddControllers().AddNewtonsoftJson(option =>
+            builder.Services.AddControllers(/*option => option.Filters.Add<ValidationActionFilter>()*/).AddNewtonsoftJson(option =>
             {
                 option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
@@ -26,7 +26,16 @@ namespace Talabat.Apis
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
 
             builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JwtSettings"));
 
@@ -85,6 +94,7 @@ namespace Talabat.Apis
             }
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseCors("AllowAnyOrigin");
             app.UseAuthentication();
             app.UseAuthorization();
 
