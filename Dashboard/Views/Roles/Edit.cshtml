@@ -1,0 +1,13 @@
+﻿@model IdentityRole
+
+<form method="post" asp-action="Edit">
+
+    <div class="input-group mt-3">
+        <input hidden name="RoleId" value="@Model.Id" />
+        <input name="RoleName" value="@Model.Name" asp-action="" class="form-control" />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-secondary"> Update Role</button>
+
+        </div>
+    </div>
+</form>

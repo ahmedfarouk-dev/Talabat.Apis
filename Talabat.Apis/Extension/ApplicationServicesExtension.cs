@@ -28,6 +28,7 @@ namespace Talabat.Apis.Extension
             services.AddScoped(typeof(IpaymentServices), typeof(PaymentServices));
 
 
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
@@ -49,9 +50,8 @@ namespace Talabat.Apis.Extension
         public static IServiceCollection AddIdentutyAndJwtApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<UserApplication, IdentityRole>()
-
-                .AddEntityFrameworkStores<StoreIdentity>();
-
+                .AddEntityFrameworkStores<StoreIdentity>()
+            .AddDefaultTokenProviders();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
